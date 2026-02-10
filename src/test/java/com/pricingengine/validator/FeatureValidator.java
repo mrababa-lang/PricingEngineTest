@@ -1,7 +1,9 @@
 package com.pricingengine.validator;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.pricingengine.model.RuleConfig;
+import com.pricingengine.model.api.request.PricingEngineRequest;
+import com.pricingengine.model.api.response.FeatureResponse;
+import com.pricingengine.model.api.response.QuotationResponse;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,18 +11,18 @@ import java.util.List;
 
 public class FeatureValidator implements Validator {
     @Override
-    public List<ValidationError> validate(JsonNode request, JsonNode quotation, RuleConfig config) {
+    public List<ValidationError> validate(PricingEngineRequest request, QuotationResponse quotation, RuleConfig config) {
         List<ValidationError> errors = new ArrayList<>();
         if (config.featureRules == null || config.featureRules.requiredFeatures == null) {
             return errors;
         }
 
-        JsonNode features = quotation.path("features");
+        List<FeatureResponse> features = quotation.getFeatures();
         for (RuleConfig.FeatureConstraint required : config.featureRules.requiredFeatures) {
-            JsonNode found = null;
-            if (features.isArray()) {
-                for (JsonNode feature : features) {
-                    if (required.code.equals(feature.path("code").asText())) {
+            FeatureResponse found = null;
+            if (features != null) {
+                for (FeatureResponse feature : features) {
+                    if (required.code.equals(feature.getCode())) {
                         found = feature;
                         break;
                     }
@@ -30,7 +32,7 @@ public class FeatureValidator implements Validator {
                 errors.add(new ValidationError("FEATURE_REQUIRED", quotationRef(quotation), required.code, "missing"));
                 continue;
             }
-            BigDecimal amount = found.path("amount").decimalValue();
+            BigDecimal amount = found.getAmount() == null ? BigDecimal.ZERO : found.getAmount();
             if (required.minAmount != null && amount.compareTo(required.minAmount) < 0) {
                 errors.add(new ValidationError("FEATURE_MIN_AMOUNT", quotationRef(quotation),
                         required.code + ">=" + required.minAmount, amount.toPlainString()));
@@ -39,16 +41,16 @@ public class FeatureValidator implements Validator {
                 errors.add(new ValidationError("FEATURE_MAX_AMOUNT", quotationRef(quotation),
                         required.code + "<=" + required.maxAmount, amount.toPlainString()));
             }
-            if (required.payable != null && found.path("payable").asBoolean() != required.payable) {
+            if (required.payable != null && !required.payable.equals(found.getPayable())) {
                 errors.add(new ValidationError("FEATURE_PAYABLE", quotationRef(quotation),
-                        required.code + " payable=" + required.payable, String.valueOf(found.path("payable").asBoolean())));
+                        required.code + " payable=" + required.payable, String.valueOf(found.getPayable())));
             }
         }
 
         return errors;
     }
 
-    private String quotationRef(JsonNode quotation) {
-        return quotation.path("quotationNo").asText("unknown") + "/" + quotation.path("planCode").asText("unknown");
+    private String quotationRef(QuotationResponse quotation) {
+        return quotation.getQuotationNo() + "/" + quotation.getPlanCode();
     }
 }
