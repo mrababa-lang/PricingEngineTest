@@ -105,6 +105,8 @@ public class PricingSteps {
 
         context.requestLocked = true;
 
+        TestHooks.SCENARIO.log("Request Body:\n" + request);
+        TestHooks.SCENARIO.log("Response Body:\n" + body);
         TestHooks.SCENARIO.attach(request.getBytes(StandardCharsets.UTF_8), "application/json", "request-payload");
         TestHooks.SCENARIO.attach(body.getBytes(StandardCharsets.UTF_8), "application/json", "response-payload");
     }
