@@ -1,7 +1,8 @@
 package com.pricingengine.validator;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.pricingengine.model.RuleConfig;
+import com.pricingengine.model.api.request.PricingEngineRequest;
+import com.pricingengine.model.api.response.QuotationResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,13 @@ public class RuleValidationEngine {
         );
     }
 
-    public List<ValidationError> validateAll(JsonNode request, JsonNode responseArray, RuleConfig config) {
+    public List<ValidationError> validateAll(PricingEngineRequest request, List<QuotationResponse> quotations, RuleConfig config) {
         List<ValidationError> errors = new ArrayList<>();
-        if (!responseArray.isArray()) {
-            errors.add(new ValidationError("RESPONSE_SCHEMA", "response", "JSON array", responseArray.getNodeType().name()));
+        if (quotations == null || quotations.isEmpty()) {
+            errors.add(new ValidationError("RESPONSE_SCHEMA", "response", "non-empty quotation list", "empty"));
             return errors;
         }
-        for (JsonNode quotation : responseArray) {
+        for (QuotationResponse quotation : quotations) {
             for (Validator validator : validators) {
                 errors.addAll(validator.validate(request, quotation, config));
             }

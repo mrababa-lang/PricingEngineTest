@@ -1,10 +1,11 @@
 package com.pricingengine.validator;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.pricingengine.model.RuleConfig;
+import com.pricingengine.model.api.request.PricingEngineRequest;
+import com.pricingengine.model.api.response.QuotationResponse;
 
 import java.util.List;
 
 public interface Validator {
-    List<ValidationError> validate(JsonNode request, JsonNode quotation, RuleConfig config);
+    List<ValidationError> validate(PricingEngineRequest request, QuotationResponse quotation, RuleConfig config);
 }

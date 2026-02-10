@@ -1,16 +1,18 @@
 package com.pricingengine.validator;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.pricingengine.model.RuleConfig;
+import com.pricingengine.model.api.request.PricingEngineRequest;
+import com.pricingengine.model.api.response.QuotationResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AgeValidator implements Validator {
     @Override
-    public List<ValidationError> validate(JsonNode request, JsonNode quotation, RuleConfig config) {
+    public List<ValidationError> validate(PricingEngineRequest request, QuotationResponse quotation, RuleConfig config) {
         List<ValidationError> errors = new ArrayList<>();
-        int age = readAge(request);
+        int age = request.getPolicyOwner() != null && request.getPolicyOwner().getAge() != null
+                ? request.getPolicyOwner().getAge() : -1;
         if (age < config.customerRules.minAge || age > config.customerRules.maxAge) {
             errors.add(new ValidationError(
                     "AGE_RANGE",
@@ -22,15 +24,7 @@ public class AgeValidator implements Validator {
         return errors;
     }
 
-    private int readAge(JsonNode request) {
-        JsonNode age = request.path("Owner").path("Age");
-        if (age.isMissingNode() || age.isNull()) {
-            age = request.path("policyOwner").path("age");
-        }
-        return age.asInt(-1);
-    }
-
-    private String quotationRef(JsonNode quotation) {
-        return quotation.path("quotationNo").asText("unknown") + "/" + quotation.path("planCode").asText("unknown");
+    private String quotationRef(QuotationResponse quotation) {
+        return quotation.getQuotationNo() + "/" + quotation.getPlanCode();
     }
 }

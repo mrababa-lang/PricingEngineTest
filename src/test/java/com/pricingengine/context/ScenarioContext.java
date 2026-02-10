@@ -1,15 +1,18 @@
 package com.pricingengine.context;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pricingengine.model.RuleConfig;
 import com.pricingengine.model.RuntimeConfig;
+import com.pricingengine.model.api.request.PricingEngineRequest;
+import com.pricingengine.model.api.response.QuotationResponse;
 import io.restassured.response.Response;
+
+import java.util.List;
 
 public class ScenarioContext {
     public RuntimeConfig runtimeConfig;
     public RuleConfig ruleConfig;
-    public ObjectNode requestPayload;
+    public PricingEngineRequest requestPayload;
     public Response response;
-    public JsonNode responseJson;
+    public List<QuotationResponse> responsePayload;
+    public boolean requestLocked;
 }
