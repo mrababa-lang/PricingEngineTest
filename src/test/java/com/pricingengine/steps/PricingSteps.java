@@ -47,15 +47,30 @@ public class PricingSteps {
     public void requestOverrideIsApplied(String caseName) {
         switch (caseName) {
             case "minAgeMinValue" -> {
-                context.requestPayload.with("policyOwner").put("age", context.ruleConfig.customerRules.minAge);
-                context.requestPayload.with("vehicle").put("estimatedValue", context.ruleConfig.vehicleRules.minEstimatedValue);
+                applyAge(context.ruleConfig.customerRules.minAge);
+                applyEstimatedValue(context.ruleConfig.vehicleRules.minEstimatedValue);
             }
             case "maxAgeMaxValue" -> {
-                context.requestPayload.with("policyOwner").put("age", context.ruleConfig.customerRules.maxAge);
-                context.requestPayload.with("vehicle").put("estimatedValue", context.ruleConfig.vehicleRules.maxEstimatedValue);
+                applyAge(context.ruleConfig.customerRules.maxAge);
+                applyEstimatedValue(context.ruleConfig.vehicleRules.maxEstimatedValue);
             }
             default -> throw new IllegalArgumentException("Unsupported override case: " + caseName);
         }
+    }
+    private void applyAge(int age) {
+        if (context.requestPayload.has("Owner")) {
+            context.requestPayload.with("Owner").put("Age", age);
+            return;
+        }
+        context.requestPayload.with("policyOwner").put("age", age);
+    }
+
+    private void applyEstimatedValue(java.math.BigDecimal estimatedValue) {
+        if (context.requestPayload.has("Car")) {
+            context.requestPayload.with("Car").put("EstimatedValue", estimatedValue.toPlainString());
+            return;
+        }
+        context.requestPayload.with("vehicle").put("estimatedValue", estimatedValue);
     }
 
     @When("the pricing API is called")
