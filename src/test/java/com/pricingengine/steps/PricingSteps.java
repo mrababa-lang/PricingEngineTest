@@ -1,6 +1,7 @@
 package com.pricingengine.steps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pricingengine.client.PricingApiClient;
 import com.pricingengine.config.ConfigManager;
 import com.pricingengine.context.ScenarioContext;
@@ -35,7 +36,7 @@ public class PricingSteps {
     @And("request payload is loaded from {string}")
     public void requestPayloadIsLoaded(String requestPath) throws Exception {
         byte[] bytes = Thread.currentThread().getContextClassLoader().getResourceAsStream(requestPath).readAllBytes();
-        context.requestPayload = MAPPER.readTree(bytes);
+        context.requestPayload = (ObjectNode) MAPPER.readTree(bytes);
 
         List<String> issues = RequestSanityValidator.validate(context.requestPayload);
         assertTrue(issues.isEmpty(), "Request sanity failed: " + String.join(" | ", issues));
