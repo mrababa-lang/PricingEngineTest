@@ -1,0 +1,4 @@
+baseUrl: https://uat.example.com
+auth:
+  type: static
+  token: replace-me

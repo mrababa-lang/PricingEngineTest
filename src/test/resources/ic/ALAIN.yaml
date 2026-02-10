@@ -1,0 +1,22 @@
+icCode: ALAIN
+customerRules:
+  minAge: 21
+  maxAge: 70
+vehicleRules:
+  allowedVehicleInsuranceTypes: [2]
+  allowedBodyCategoryCodes: ["SUV", "SEDAN"]
+  minManufactureYear: 2012
+  maxManufactureYear: 2026
+  minEstimatedValue: 10000
+  maxEstimatedValue: 200000
+pricingRules:
+  minBasePremium: 200
+  maxBasePremium: 10000
+planRules:
+  allowedPlanCodes: ["A-BASIC", "A-PLUS"]
+featureRules:
+  requiredFeatures:
+    - code: ROADSIDE
+      minAmount: 0
+      maxAmount: 500
+      payable: true
