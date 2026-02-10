@@ -1,0 +1,24 @@
+[
+  {
+    "quotationNo": "Q-10001",
+    "planCode": "A-BASIC",
+    "vehicleInsuranceType": 2,
+    "consideredCarValue": 45000,
+    "basePremium": 950.5,
+    "policyPremiumWithoutVat": 998.03,
+    "features": [
+      {"code": "ROADSIDE", "amount": 120, "payable": true}
+    ]
+  },
+  {
+    "quotationNo": "Q-10002",
+    "planCode": "A-PLUS",
+    "vehicleInsuranceType": 2,
+    "consideredCarValue": 45000,
+    "basePremium": 1450,
+    "policyPremiumWithoutVat": 1522.5,
+    "features": [
+      {"code": "ROADSIDE", "amount": 250, "payable": true}
+    ]
+  }
+]

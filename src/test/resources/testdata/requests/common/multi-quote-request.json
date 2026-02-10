@@ -1,0 +1,15 @@
+{
+  "policyOwner": {
+    "age": 35,
+    "dateOfBirth": "1989-06-12"
+  },
+  "vehicle": {
+    "bodyCategoryCode": "SUV",
+    "manufactureYear": 2019,
+    "estimatedValue": 45000,
+    "usageCode": "PRIVATE"
+  },
+  "plan": {
+    "companyCode": "ALAIN"
+  }
+}
