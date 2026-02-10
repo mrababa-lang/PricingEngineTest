@@ -11,7 +11,7 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.pricingengine.steps,com.pricingengine.hooks")
-@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty,summary,tech.grasshopper.extentreports.cucumber.adapter.ExtentCucumberAdapter:")
+@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty,summary,com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:")
 @ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "not @ignore")
 public class CucumberTestSuite {
 }
