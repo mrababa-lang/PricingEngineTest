@@ -1,15 +1,53 @@
 {
-  "policyOwner": {
-    "age": 35,
-    "dateOfBirth": "1989-06-12"
+  "QuoteReferenceNo": "F4L1M0H41102A1",
+  "PolicyEffectiveDate": "2025-09-20T14:10:00+04:00",
+  "ProductCodes": [
+    "162",
+    "163",
+    "161"
+  ],
+  "CurrentInsuranceTypeCode": "3",
+  "Car": {
+    "IdentityTypeCode": 1,
+    "MakeCode": "3018",
+    "Make": "FORD",
+    "ModelCode": "30405",
+    "Model": "EDGE",
+    "BodyCategoryCode": "2",
+    "Trim": null,
+    "TrimCode": null,
+    "ManufactureYear": "2024",
+    "PassengersNo": "5",
+    "Cylinders": "6",
+    "RegistrationDate": "2024-12-04",
+    "PlaceofIssueCityCode": "2",
+    "ChassisNo": "2FMPK4G83HBB24135",
+    "EstimatedValue": "73400.00",
+    "SpecCode": 1,
+    "UsageCode": "1",
+    "FuelType": "4",
+    "RegistrationExpiryDate": "2024-09-30"
   },
-  "vehicle": {
-    "bodyCategoryCode": "SUV",
-    "manufactureYear": 2019,
-    "estimatedValue": 45000,
-    "usageCode": "PRIVATE"
+  "Owner": {
+    "IdentityTypeCode": 1,
+    "EmiratesIDNo": "784198960958027",
+    "CommercialNo": null,
+    "LicenseIssueDate": "2021-09-12",
+    "NationalityCode": "46",
+    "Age": 32,
+    "DateOfBirth": "1993-02-20",
+    "HasOtherCountryLicense": null,
+    "OtherCountryLicenseCode": null,
+    "OtherCountryLicenseYears": null
   },
-  "plan": {
-    "companyCode": "ALAIN"
-  }
+  "ClaimsHistoryCode": 5,
+  "OverrideClaimsHistoryCode": null,
+  "IsRenewal": false,
+  "HasAdditionalDrivers": false,
+  "HasScheme": false,
+  "CustomParameters": {
+    "VehicleWeight": "1700"
+  },
+  "CurrentInsuranceCompany": "Oman Insurance Company - Abu Dhabi branch",
+  "IsPreviousPolicyTransferred": null
 }

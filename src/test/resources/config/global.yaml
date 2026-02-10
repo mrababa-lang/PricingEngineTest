@@ -2,4 +2,4 @@ timeoutMs: 10000
 maskFields:
   - authorization
   - token
-endpointPath: /pricing-engine/quote
+endpointPath: /api/quote

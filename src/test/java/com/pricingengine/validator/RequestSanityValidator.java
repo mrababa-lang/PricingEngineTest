@@ -9,18 +9,31 @@ public class RequestSanityValidator {
 
     public static List<String> validate(JsonNode request) {
         List<String> issues = new ArrayList<>();
-        if (!request.at("/policyOwner/age").canConvertToInt()) {
-            issues.add("Missing or invalid request field: policyOwner.age");
+
+        JsonNode age = firstPresent(request.at("/Owner/Age"), request.at("/policyOwner/age"));
+        if (!age.canConvertToInt()) {
+            issues.add("Missing or invalid request field: Owner.Age");
         }
-        if (!request.at("/vehicle/bodyCategoryCode").isTextual()) {
-            issues.add("Missing or invalid request field: vehicle.bodyCategoryCode");
+
+        JsonNode bodyCategory = firstPresent(request.at("/Car/BodyCategoryCode"), request.at("/vehicle/bodyCategoryCode"));
+        if (!bodyCategory.isTextual()) {
+            issues.add("Missing or invalid request field: Car.BodyCategoryCode");
         }
-        if (!request.at("/vehicle/manufactureYear").canConvertToInt()) {
-            issues.add("Missing or invalid request field: vehicle.manufactureYear");
+
+        JsonNode manufactureYear = firstPresent(request.at("/Car/ManufactureYear"), request.at("/vehicle/manufactureYear"));
+        if (!manufactureYear.canConvertToInt()) {
+            issues.add("Missing or invalid request field: Car.ManufactureYear");
         }
-        if (!request.at("/vehicle/estimatedValue").isNumber()) {
-            issues.add("Missing or invalid request field: vehicle.estimatedValue");
+
+        JsonNode estimatedValue = firstPresent(request.at("/Car/EstimatedValue"), request.at("/vehicle/estimatedValue"));
+        if (!estimatedValue.isNumber() && !estimatedValue.isTextual()) {
+            issues.add("Missing or invalid request field: Car.EstimatedValue");
         }
+
         return issues;
+    }
+
+    private static JsonNode firstPresent(JsonNode primary, JsonNode fallback) {
+        return !primary.isMissingNode() && !primary.isNull() ? primary : fallback;
     }
 }

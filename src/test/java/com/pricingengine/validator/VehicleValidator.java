@@ -13,13 +13,15 @@ public class VehicleValidator implements Validator {
         List<ValidationError> errors = new ArrayList<>();
         RuleConfig.VehicleRules rules = config.vehicleRules;
 
-        String bodyCategory = request.path("vehicle").path("bodyCategoryCode").asText("");
+        JsonNode vehicle = readVehicleNode(request);
+
+        String bodyCategory = vehicle.path("BodyCategoryCode").asText(vehicle.path("bodyCategoryCode").asText(""));
         if (rules.allowedBodyCategoryCodes != null && !rules.allowedBodyCategoryCodes.contains(bodyCategory)) {
             errors.add(new ValidationError("VEHICLE_BODY_CATEGORY", quotationRef(quotation),
                     String.valueOf(rules.allowedBodyCategoryCodes), bodyCategory));
         }
 
-        int manufactureYear = request.path("vehicle").path("manufactureYear").asInt(-1);
+        int manufactureYear = vehicle.path("ManufactureYear").asInt(vehicle.path("manufactureYear").asInt(-1));
         if (rules.minManufactureYear != null && manufactureYear < rules.minManufactureYear) {
             errors.add(new ValidationError("VEHICLE_MIN_YEAR", quotationRef(quotation),
                     ">= " + rules.minManufactureYear, String.valueOf(manufactureYear)));
@@ -29,7 +31,10 @@ public class VehicleValidator implements Validator {
                     "<= " + rules.maxManufactureYear, String.valueOf(manufactureYear)));
         }
 
-        BigDecimal estimatedValue = request.path("vehicle").path("estimatedValue").decimalValue();
+        BigDecimal estimatedValue = vehicle.path("EstimatedValue").decimalValue();
+        if (vehicle.path("EstimatedValue").isMissingNode()) {
+            estimatedValue = vehicle.path("estimatedValue").decimalValue();
+        }
         if (rules.minEstimatedValue != null && estimatedValue.compareTo(rules.minEstimatedValue) < 0) {
             errors.add(new ValidationError("VEHICLE_MIN_VALUE", quotationRef(quotation),
                     ">= " + rules.minEstimatedValue, estimatedValue.toPlainString()));
@@ -46,6 +51,14 @@ public class VehicleValidator implements Validator {
         }
 
         return errors;
+    }
+
+    private JsonNode readVehicleNode(JsonNode request) {
+        JsonNode car = request.path("Car");
+        if (!car.isMissingNode() && !car.isNull()) {
+            return car;
+        }
+        return request.path("vehicle");
     }
 
     private String quotationRef(JsonNode quotation) {
